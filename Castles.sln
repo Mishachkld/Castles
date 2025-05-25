@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castles.Entities", "Castles.Entities\Castles.Entities.csproj", "{8C55B102-D0D5-430C-9319-CDB00CEFC7CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castles.Application", "Castles.Application\Castles.Application.csproj", "{238AB771-8F07-47CD-B63C-563FBB1650E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castles.WebAPI", "Castles.WebAPI\Castles.WebAPI.csproj", "{CD99B76A-37DC-44FD-B47E-485F2A580EE7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C55B102-D0D5-430C-9319-CDB00CEFC7CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C55B102-D0D5-430C-9319-CDB00CEFC7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C55B102-D0D5-430C-9319-CDB00CEFC7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C55B102-D0D5-430C-9319-CDB00CEFC7CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{238AB771-8F07-47CD-B63C-563FBB1650E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238AB771-8F07-47CD-B63C-563FBB1650E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238AB771-8F07-47CD-B63C-563FBB1650E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238AB771-8F07-47CD-B63C-563FBB1650E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD99B76A-37DC-44FD-B47E-485F2A580EE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD99B76A-37DC-44FD-B47E-485F2A580EE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD99B76A-37DC-44FD-B47E-485F2A580EE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD99B76A-37DC-44FD-B47E-485F2A580EE7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
