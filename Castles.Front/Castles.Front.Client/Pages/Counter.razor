@@ -1,0 +1,14 @@
+﻿@page "/counter"
+@rendermode InteractiveWebAssembly
+
+<AntList TItem="string"
+         DataSource="@_data">
+    <ItemTemplate>
+        @context
+    </ItemTemplate>
+</AntList>
+
+@code {
+    private List<string> _data = ["Замок 1", "Замок 2", "Замок 3"];
+
+}

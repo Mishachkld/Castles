@@ -1,12 +1,12 @@
-using Castles;
-using Castles.Agregator.Components;
+using Castles.Front.Client.Pages;
+using Castles.Front.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
-
+builder.Services.AddAntDesign();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +28,6 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Castles.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(Castles.Front.Client._Imports).Assembly);
 
 app.Run();
