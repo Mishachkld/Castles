@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castles.Agregator", "Castle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castles.Client", "Castle.Front\Castles.Client\Castles.Client.csproj", "{CF554D1F-9608-448A-B969-1E1EAD7DC6B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castles.Database", "Castles.Database\Castles.Database.csproj", "{FD62082C-6CCA-40A2-BE68-4A374E2E2307}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{CF554D1F-9608-448A-B969-1E1EAD7DC6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF554D1F-9608-448A-B969-1E1EAD7DC6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF554D1F-9608-448A-B969-1E1EAD7DC6B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD62082C-6CCA-40A2-BE68-4A374E2E2307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD62082C-6CCA-40A2-BE68-4A374E2E2307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD62082C-6CCA-40A2-BE68-4A374E2E2307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD62082C-6CCA-40A2-BE68-4A374E2E2307}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

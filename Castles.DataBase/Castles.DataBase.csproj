@@ -7,15 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Castles.Entities\Castles.Entities.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Repository\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Configuration\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Castles.Application\Castles.Application.csproj" />
     </ItemGroup>
 
 </Project>

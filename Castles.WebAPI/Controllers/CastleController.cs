@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Castles.WebAPI.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class CastleController : Controller
 {
     [HttpGet]
