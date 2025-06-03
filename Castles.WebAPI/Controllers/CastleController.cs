@@ -3,39 +3,57 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Castles.WebAPI.Controllers;
 
-[Route("api/[controller]")]
+[Route("api")] // Базовый маршрут: /api
 [ApiController]
-public class CastleController : Controller
+public class CastleController : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("castles")] // Явный абсолютный путь
     public IActionResult Castles()
     {
-        return View();
+        var castles = new List<Castle>()
+        {
+            new Castle()
+            {
+                Id = Guid.NewGuid(),
+                Name = "King 1",
+                Description = "King 1 description",
+            },
+            new Castle()
+            {
+                Id = Guid.NewGuid(),
+                Name = "King 2",
+                Description = "King 2 description",
+            }
+        };
+        return Ok(castles);
     }
-    
-    [HttpGet]
+
+    [HttpGet("{id:guid}")]
     public IActionResult Castle(Guid id)
     {
-        return View();
+        return Ok(new Castle()
+        {
+            Id = id,
+            Name = "Dynamic King",
+            Description = "Description for " + id
+        });
     }
 
     [HttpPost]
-    public IActionResult CastleCreate(Castle castleNew)
+    public IActionResult CastleCreate([FromBody] Castle castleNew)
     {
-        return Ok();
-    }
-    
-    [HttpDelete]
-    public IActionResult CastleDelete(Guid id)
-    {
-        return View();
+        return Ok(castleNew);
     }
 
-    [HttpPut]
-    public IActionResult CastleUpdate(Castle updatedCastle)
+    [HttpDelete("{id:guid}")]
+    public IActionResult CastleDelete(Guid id)
     {
-        return Ok();
+        return Ok($"Deleted {id}");
     }
-    
-    
+
+    [HttpPut("{id:guid}")]
+    public IActionResult CastleUpdate(Guid id, [FromBody] Castle updatedCastle)
+    {
+        return Ok(updatedCastle);
+    }
 }
