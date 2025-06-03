@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Castles.Application\Castles.Application.csproj" />
+        <ProjectReference Include="..\Castles.Client\Castles.Client.csproj" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.6"/>
     </ItemGroup>
+
 </Project>
