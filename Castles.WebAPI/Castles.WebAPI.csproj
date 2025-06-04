@@ -8,5 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Castles.Application\Castles.Application.csproj" />
+      <ProjectReference Include="..\Castles.Database\Castles.Database.csproj" />
     </ItemGroup>
 </Project>

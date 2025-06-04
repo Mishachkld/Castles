@@ -1,4 +1,6 @@
-﻿using Castles.Entities;
+﻿using AutoMapper;
+using Castles.Application.Interfaces;
+using Castles.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Castles.WebAPI.Controllers;
@@ -7,42 +9,32 @@ namespace Castles.WebAPI.Controllers;
 [ApiController]
 public class CastleController : ControllerBase
 {
-    [HttpGet("castles")] // Явный абсолютный путь
-    public IActionResult Castles()
+    private readonly IRepositoryCRUD<Castle> _repository;
+
+    public CastleController(IRepositoryCRUD<Castle> repository)
     {
-        var castles = new List<Castle>()
-        {
-            new Castle()
-            {
-                Id = Guid.NewGuid(),
-                Name = "King 1",
-                Description = "King 1 description",
-            },
-            new Castle()
-            {
-                Id = Guid.NewGuid(),
-                Name = "King 2",
-                Description = "King 2 description",
-            }
-        };
+        _repository = repository;
+    }
+
+    [HttpGet("castles")] // Явный абсолютный путь
+    public async Task<IActionResult> Castles()
+    {
+        var castles = await _repository.GetAll();
         return Ok(castles);
     }
 
-    [HttpGet("{id:guid}")]
-    public IActionResult Castle(Guid id)
+    [HttpGet("castle/{id:guid}")]
+    public async Task<IActionResult> Castle(Guid id)
     {
-        return Ok(new Castle()
-        {
-            Id = id,
-            Name = "Dynamic King",
-            Description = "Description for " + id
-        });
+        var castle = await _repository.Get(id);
+        return Ok(castle);
     }
 
-    [HttpPost]
-    public IActionResult CastleCreate([FromBody] Castle castleNew)
+    [HttpPost("castle")]
+    public async Task<IActionResult> CastleCreate([FromBody] Castle castleNew)
     {
-        return Ok(castleNew);
+        var response = await _repository.Add(castleNew);
+        return Ok(response);
     }
 
     [HttpDelete("{id:guid}")]

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Castles.Application.DTO.DatabaseDto;
 
+[Table("castles_entityframework")]
 public class CastleDatabaseDto
 {
     [Key]

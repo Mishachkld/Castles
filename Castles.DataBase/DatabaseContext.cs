@@ -1,4 +1,5 @@
-﻿using Castles.Application.Interfaces;
+﻿using Castles.Application.DTO.DatabaseDto;
+using Castles.Application.Interfaces;
 using Castles.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +7,7 @@ namespace Castles.Database;
 
 public class DatabaseContext : DbContext, ICastlesDbContext
 {
-    public DbSet<Castle> Castles { get; set; }
+    public DbSet<CastleDatabaseDto> Castles { get; set; }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> configuration) : base(
         configuration)
@@ -17,7 +18,7 @@ public class DatabaseContext : DbContext, ICastlesDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+
     }
 
 }
