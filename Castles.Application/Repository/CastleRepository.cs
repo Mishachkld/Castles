@@ -36,20 +36,46 @@ public class CastleRepository : IRepositoryCRUD<Castle>
 
     public async Task<Guid> Add(Castle entity)
     {
-        entity.Id = Guid.NewGuid();
+        if (string.IsNullOrWhiteSpace(entity?.Name))
+        {
+            throw new Exception("Name is required");
+        }
+        var id = Guid.NewGuid();
         var castlesDb = _mapper.Map<CastleDatabaseDto>(entity);
+        castlesDb.Id = id;
+        castlesDb.CreationDate = DateTime.Now;
         await _databaseContext.Castles.AddAsync(castlesDb);
         await _databaseContext.SaveChangesAsync(CancellationToken.None);
-        return entity.Id;
+        return id;
     }
 
-    public Task<Castle> Update(Guid id, Castle entity)
-    {
-        throw new NotImplementedException();
+    public async Task<Castle> Update(Guid id, Castle entity)
+    {   // todo: Добавить проеврку
+        var currentCastle = await _databaseContext.Castles.FindAsync(id);
+        if (currentCastle == null)
+        {
+            // todo: добавить свою ошибку
+            throw new Exception($"Object with Id '{id}' not found.");
+        }
+        currentCastle.UpdateDate = DateTime.Now;
+        currentCastle.Name = entity.Name;
+        currentCastle.Description = entity.Description;
+        currentCastle.BuildDate = entity.BuildDate;
+        _databaseContext.Castles.Update(currentCastle);
+        await _databaseContext.SaveChangesAsync(CancellationToken.None);
+        return _mapper.Map<Castle>(currentCastle);    
     }
 
-    public Task<bool> Delete(Guid id)
+    public async Task<bool> Delete(Guid id)
     {
-        throw new NotImplementedException();
+        var currentCastle = await _databaseContext.Castles.FindAsync(id);
+        if (currentCastle == null)
+        {
+            // todo: добавить свою ошибку
+            throw new Exception($"Object with Id '{id}' not found.");
+        }
+        _databaseContext.Castles.Remove(currentCastle);
+        await _databaseContext.SaveChangesAsync(CancellationToken.None);
+        return true;
     }
 }

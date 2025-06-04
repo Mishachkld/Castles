@@ -26,26 +26,64 @@ public class CastleController : ControllerBase
     [HttpGet("castle/{id:guid}")]
     public async Task<IActionResult> Castle(Guid id)
     {
-        var castle = await _repository.Get(id);
+        Castle castle;
+        try
+        {
+            castle = await _repository.Get(id);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+
         return Ok(castle);
     }
 
     [HttpPost("castle")]
     public async Task<IActionResult> CastleCreate([FromBody] Castle castleNew)
     {
-        var response = await _repository.Add(castleNew);
+        Guid response;
+        try
+        {
+            response = await _repository.Add(castleNew);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
         return Ok(response);
     }
 
-    [HttpDelete("{id:guid}")]
-    public IActionResult CastleDelete(Guid id)
+    [HttpDelete("castle/{id:guid}")]
+    public async Task<IActionResult> CastleDelete(Guid id)
     {
-        return Ok($"Deleted {id}");
+        bool response;
+        try
+        {
+            response = await _repository.Delete(id);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        return Ok(response);
     }
 
-    [HttpPut("{id:guid}")]
-    public IActionResult CastleUpdate(Guid id, [FromBody] Castle updatedCastle)
+    [HttpPut("castle/{id:guid}")]
+    public async Task<IActionResult> CastleUpdate(Guid id, [FromBody] Castle updatedCastle)
     {
-        return Ok(updatedCastle);
+        Castle response;
+        try
+        {
+            response = await _repository.Update(id, updatedCastle);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
+        return Ok(response);
     }
 }
