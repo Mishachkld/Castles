@@ -13,4 +13,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.6"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Castles.Application\Castles.Application.csproj" />
+    </ItemGroup>
 </Project>

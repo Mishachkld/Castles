@@ -1,0 +1,36 @@
+﻿@page "/castles"
+@using System.Text.Json
+@using global::Castles.Entities
+@rendermode InteractiveWebAssembly
+@inject HttpClient _httpClient 
+
+<AntList TItem="Castle"
+         DataSource="@_data"
+         ItemLayout="ListItemLayout.Vertical">
+    <ItemTemplate>
+        <div>
+            Название замка: @context.Name
+        </div>
+        <div>
+            Описание: @context.Description
+        </div>
+    </ItemTemplate>
+</AntList>
+
+@code {
+    private List<Castle> _data = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var responseMessage = await _httpClient.GetAsync("api/castles");
+        if (responseMessage.IsSuccessStatusCode)
+        {
+            var content = await responseMessage.Content.ReadAsStringAsync();
+            _data = JsonSerializer.Deserialize<List<Castle>>(content, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            });
+        }
+    }
+
+}
