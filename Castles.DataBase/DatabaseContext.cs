@@ -12,12 +12,9 @@ public class DatabaseContext : DbContext, ICastlesDbContext
     public DbSet<OwnerDatabaseDto> Owners { get; set; }
     public DbSet<ViewingStatusDatabaseDto> ViewingStatuses { get; set; }
 
-    public DatabaseContext(DbContextOptions<DatabaseContext> configuration) : base(
-        configuration)
+    public DatabaseContext(DbContextOptions<DatabaseContext> configuration) : base(configuration)
     {
-        Database.EnsureDeleted();
         Database.EnsureCreated(); 
-        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,7 +26,22 @@ public class DatabaseContext : DbContext, ICastlesDbContext
             .HasForeignKey(p => p.CastleId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Можно добавить начальные данные для статусов просмотра
+        // Настройка связи со статусом
+        modelBuilder.Entity<CastleDatabaseDto>()
+            .HasOne(c => c.ViewingStatus)
+            .WithMany(v => v.Castles)
+            .HasForeignKey(c => c.ViewingStatusId)
+            .OnDelete(DeleteBehavior.Restrict); 
+        
+        // Настройка связи с Owner
+        modelBuilder.Entity<CastleDatabaseDto>()
+            .HasOne(c => c.Owner)
+            .WithMany(v => v.Castles)
+            .HasForeignKey(c => c.OwnerId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
+
         modelBuilder.Entity<ViewingStatusDatabaseDto>().HasData(
             new ViewingStatusDatabaseDto { Id = 1, Name = "Доступен для просмотра" },
             new ViewingStatusDatabaseDto { Id = 2, Name = "Закрыт для посещения" },
