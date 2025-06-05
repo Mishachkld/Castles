@@ -1,13 +1,15 @@
 ﻿@page "/change-castles"
+@rendermode InteractiveWebAssembly
+
 @using System.Text.Json
 @using Castles.Entities
 
 @inject HttpClient _httpClient
 @inject NavigationManager NavManager
-@inject IMessageService Message
+@inject MessageService Message
 @inject ModalService Modal
 
-<AntList DataSource="@_data" Grid="new ListGridType(){Column = 4, Gutter = 16}" Split>
+<AntList DataSource="@_data" Grid="new ListGridType() { Column = 4, Gutter = 16 }" Split>
     <ChildContent Context="item">
         <ListItem OnClick="() => OnItemClicked(item?.Id)">
             <ListItemMeta Description="@item.Description">
@@ -18,7 +20,7 @@
                     <a href="/castle/@item.Id">@item.Name</a>
                 </TitleTemplate>
             </ListItemMeta>
-            <Button OnClick="async () => DeleteItemAsync(item)" Icon="@IconType.Outline.Delete" Type="ButtonType.Text" OnClickStopPropagation></Button>
+            <Button OnClick="async () => await DeleteItemAsync(item)" Icon="@IconType.Outline.Delete" Type="ButtonType.Text" OnClickStopPropagation></Button>
             <Button OnClick="async () => UpdateItemAsync(item.Id)" Icon="@IconType.Outline.Download" Type="ButtonType.Text" OnClickStopPropagation></Button>
         </ListItem>
     </ChildContent>
@@ -32,7 +34,6 @@
                                       Height="auto"
                                       Preview="false"
                                       Src="https://www.onthegotours.com/repository/Conwy-Castle-Wales-830041705508083.jpg"/>;
-
 
       protected override async Task OnParametersSetAsync()
       {
@@ -56,11 +57,12 @@
           NavManager.NavigateTo($"castle/{castleId}");
       }
 
-      private void DeleteItemAsync(Castle item)
+      private async Task DeleteItemAsync(Castle item)
       {
-          Modal.CreateModal(new ModalOptions()
+          await Modal.ConfirmAsync(new ConfirmOptions()
           {
-              OnOk = async (options) => await DeleteRequest(item),
+              Title = "Удалить замок?",
+              OnOk = async (_) => await DeleteRequest(item),
           });
       }
 
@@ -68,7 +70,7 @@
       {
           var isUpdated = false;
           var responseMessage = await _httpClient.DeleteAsync($"api/castle/{item.Id}");
-          if (!responseMessage.IsSuccessStatusCode)
+          if (responseMessage.IsSuccessStatusCode)
           {
               var content = await responseMessage.Content.ReadAsStringAsync();
               isUpdated = JsonSerializer.Deserialize<bool>(content);
@@ -76,16 +78,17 @@
          
           if (isUpdated)
           {
-              Message.Success("Удален объект");
+              await Message.Success("Удален объект");
               _data.Remove(item);
+              StateHasChanged();
               return;
           }
-          Message.Error("Не удалось обновить объект");
+          await Message.Error("Не удалось обновить объект");
       }
 
       private void UpdateItemAsync(Guid id)
       {
-          NavManager.NavigateTo("castle-update");
+          NavManager.NavigateTo($"castle-action/{id}");
       }
 
 }

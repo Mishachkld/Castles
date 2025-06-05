@@ -1,0 +1,61 @@
+﻿@page "/castle-create"
+
+@using Castles.Application.DTO.WebDto
+@rendermode InteractiveWebAssembly
+@inject HttpClient Http
+@inject MessageService MessageService
+@inject NavigationManager Navigation
+
+<Form Model="@_createCastleDto" LabelColSpan="8" WrapperColSpan="16">
+    <FormItem Label="Название" Required>
+        <Input @bind-Value="@_createCastleDto.Name" />
+    </FormItem>
+
+    <FormItem Label="Описание">
+        <TextArea Rows="4" @bind-Value="@_createCastleDto.Description" />
+    </FormItem>
+
+    <FormItem Label="Дата постройки">
+        <DatePicker @bind-Value="@_buildDate" Format="yyyy-MM-dd" />
+    </FormItem>
+    <Button HtmlType="submit" OnClick="HandleOk">Создать замок</Button>
+</Form>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    [Parameter] public EventCallback OnCastleAdded { get; set; }
+    
+    private CreateCastleDto _createCastleDto = new(){ OwnerId = 1, ViewingStatusId = 1};
+    private DateTime? _buildDate;
+    
+
+    private async Task HandleOk(MouseEventArgs args)
+    {
+        if (string.IsNullOrWhiteSpace(_createCastleDto.Name))
+        {
+            await MessageService.Error("Название обязательно для заполнения");
+            return;
+        }
+
+        _createCastleDto.BuildDate = _buildDate;
+        
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/castle", _createCastleDto);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                await MessageService.Success("Замок успешно добавлен");
+                await OnCastleAdded.InvokeAsync();
+                Navigation.NavigateTo("/");
+                return;
+            }
+                await MessageService.Error($"Ошибка: {await response.Content.ReadAsStringAsync()}");
+        }
+        catch (Exception ex)
+        {
+            await MessageService.Error($"Ошибка: {ex.Message}");
+        }
+    }
+
+}

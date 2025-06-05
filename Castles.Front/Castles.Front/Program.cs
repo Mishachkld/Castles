@@ -1,3 +1,4 @@
+using AntDesign;
 using Castles.Front.Client.Pages;
 using Castles.Front.Components;
 
@@ -12,7 +13,8 @@ builder.Services.AddScoped(sp =>
     new HttpClient 
     { 
         BaseAddress = new Uri(apiBaseUrl) 
-    });
+    }); 
+// Для модальных окон
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
