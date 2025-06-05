@@ -1,24 +1,34 @@
 ﻿@page "/castles"
+@page "/"
 @using System.Text.Json
 @using global::Castles.Entities
 @rendermode InteractiveWebAssembly
-@inject HttpClient _httpClient 
+@inject HttpClient _httpClient
 
-<AntList TItem="Castle"
-         DataSource="@_data"
-         ItemLayout="ListItemLayout.Vertical">
-    <ItemTemplate>
-        <div>
-            Название замка: @context.Name
-        </div>
-        <div>
-            Описание: @context.Description
-        </div>
-    </ItemTemplate>
+
+<AntList DataSource="@_data" ItemLayout="@ListItemLayout.Vertical" Split>
+    <ChildContent Context="item">
+        <ListItem>
+            <ListItemMeta Description="@item.Description">
+                <AvatarTemplate>
+                    @avatar
+                </AvatarTemplate>
+                <TitleTemplate>
+                    <a href="/castle/@item.Id">@item.Name</a>
+                </TitleTemplate>
+            </ListItemMeta>
+        </ListItem>
+    </ChildContent>
 </AntList>
 
 @code {
     private List<Castle> _data = [];
+
+    RenderFragment avatar = @<Image Width="300px" 
+                                    Height="auto"
+                                    Preview="false"
+                                    Src="https://www.onthegotours.com/repository/Conwy-Castle-Wales-830041705508083.jpg"/>;
+
 
     protected override async Task OnParametersSetAsync()
     {

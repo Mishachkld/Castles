@@ -1,23 +1,36 @@
-﻿@inherits LayoutComponentBase
+﻿@using AntDesign
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+<Layout Class="layout">
+    <Header>
+        <div class="logo" />
+        <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Horizontal">
+            <MenuItem RouterLink="/" Key="1">Замки</MenuItem>
+        </Menu>
+    </Header>
+    <Content Class="site-layout-content" Style="padding: 0 50px;">
+        <div class="site-layout-content" style="padding: 24px;">
             @Body
-        </article>
-    </main>
-</div>
+        </div>
+    </Content>
+</Layout>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+<style>
+    .site-layout-content {
+        background: #fff;
+        height: 100%;
+    }
+    #components-layout-demo-top .logo {
+        width: 120px;
+        height: 31px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px 24px 16px 0;
+        float: left;
+    }
+</style>
