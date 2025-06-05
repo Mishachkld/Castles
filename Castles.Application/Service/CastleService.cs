@@ -77,4 +77,34 @@ public class CastleService
         return _mapper.Map<CastleDetails>(castle);
     }
     
+    public async Task<CastleDetails> UpdateCastleAsync(Guid castleId, CastleUpdateDto updateDto)
+    {
+        var castle = await _context.Castles
+            .Include(c => c.Pictures)
+            .FirstOrDefaultAsync(c => c.Id == castleId);
+
+        if (castle == null)
+            throw new KeyNotFoundException("Castle not found");
+
+        // Проверяем существование владельца и статуса
+        var ownerExists = await _context.Owners.AnyAsync(o => o.Id == updateDto.OwnerId);
+        var statusExists = await _context.ViewingStatuses.AnyAsync(v => v.Id == updateDto.ViewingStatusId);
+
+        if (!ownerExists || !statusExists)
+            throw new ArgumentException("Owner or ViewingStatus not found");
+
+        // Обновляем основные поля
+        castle.Name = updateDto.Name;
+        castle.Description = updateDto.Description;
+        castle.BuildDate = updateDto.BuildDate;
+        castle.OwnerId = updateDto.OwnerId;
+        castle.ViewingStatusId = updateDto.ViewingStatusId;
+        castle.UpdateDate = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync(CancellationToken.None);
+
+        return _mapper.Map<CastleDetails>(castle);
+    }
+
+    
 }

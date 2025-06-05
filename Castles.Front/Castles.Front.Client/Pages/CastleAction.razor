@@ -1,6 +1,69 @@
 ﻿@page "/castle-action/{Id:guid}"
-<h3>CastleAction</h3>
+@using Castles.Application.DTO.WebDto
+@rendermode InteractiveWebAssembly
+
+@inject HttpClient Http
+@inject MessageService MessageService
+@inject NavigationManager Navigation
+
+<Form Model="@_updateCastleDto" LabelColSpan="8" WrapperColSpan="16">
+    <FormItem Label="Название" Required>
+        <Input @bind-Value="@_updateCastleDto.Name" />
+    </FormItem>
+
+    <FormItem Label="Описание">
+        <TextArea Rows="4" @bind-Value="@_updateCastleDto.Description" />
+    </FormItem>
+
+    <FormItem Label="Дата постройки">
+        <DatePicker @bind-Value="@_updateCastleDto.BuildDate" Format="yyyy-MM-dd" />
+    </FormItem>
+    <Button HtmlType="submit" OnClick="HandleOk">Обновить замок</Button>
+</Form>
 
 @code {
     [Parameter] public Guid Id { get; set; }
+    [Parameter] public EventCallback OnCastleAdded { get; set; }
+
+    private CastleUpdateDto _updateCastleDto = new(){ OwnerId = 1, ViewingStatusId = 1};
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _updateCastleDto = await Http.GetFromJsonAsync<CastleUpdateDto>($"api/castle/{Id}");
+        if (_updateCastleDto == null)
+        {
+            Navigation.NavigateTo("/change-castles");
+        }
+
+        _updateCastleDto.ViewingStatusId = 1;
+        _updateCastleDto.OwnerId = 1;
+    }
+
+    private async Task HandleOk(MouseEventArgs args)
+    {
+        if (string.IsNullOrWhiteSpace(_updateCastleDto.Name))
+        {
+            await MessageService.Error("Название обязательно для заполнения");
+            return;
+        }
+        
+        try
+        {
+            var response = await Http.PutAsJsonAsync($"api/castle/{Id}", _updateCastleDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                MessageService.Success("Замок успешно обновлен");
+                await OnCastleAdded.InvokeAsync();
+                Navigation.NavigateTo("/change-castles");
+                return;
+            }
+            await MessageService.Error($"Ошибка: {await response.Content.ReadAsStringAsync()}");
+        }
+        catch (Exception ex)
+        {
+            await MessageService.Error($"Ошибка: {ex.Message}");
+        }
+    }
 }

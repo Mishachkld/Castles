@@ -80,7 +80,6 @@
           {
               await Message.Success("Удален объект");
               _data.Remove(item);
-              StateHasChanged();
               return;
           }
           await Message.Error("Не удалось обновить объект");

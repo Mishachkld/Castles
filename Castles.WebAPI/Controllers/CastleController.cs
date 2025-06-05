@@ -76,12 +76,12 @@ public class CastleController : ControllerBase
     }
 
     [HttpPut("castle/{id:guid}")]
-    public async Task<IActionResult> CastleUpdate(Guid id, [FromBody] Castle updatedCastle)
+    public async Task<IActionResult> CastleUpdate(Guid id, [FromBody] CastleUpdateDto updatedCastle)
     {
         Castle response;
         try
         {
-            response = await _repository.Update(id, updatedCastle);
+            response = await _service.UpdateCastleAsync(id, updatedCastle);
         }
         catch (Exception e)
         {
