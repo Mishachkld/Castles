@@ -11,6 +11,17 @@ public class CastleMappingProfile : Profile
         CreateMap<Castle, CastleDatabaseDto>()
             .ForMember(dest => dest.UpdateDate, opt => opt.Ignore())
             .ForMember(dest => dest.CreationDate, opt => opt.Ignore())
+            .ForMember(dest => dest.Owner, opt => opt.Ignore())
+            .ForMember(dest => dest.ViewingStatus, opt => opt.Ignore())
+            .ForMember(dest => dest.Pictures, opt => opt.Ignore())
+            .ReverseMap();
+        
+        CreateMap<CastleDetails, CastleDatabaseDto>()
+            .ForMember(dest => dest.UpdateDate, opt => opt.Ignore())
+            .ForMember(dest => dest.CreationDate, opt => opt.Ignore())
+            .ForMember(dest => dest.Owner, opt => opt.Ignore())
+            .ForMember(dest => dest.ViewingStatus, opt => opt.Ignore())
+            .ForMember(dest => dest.Pictures, opt => opt.Ignore())
             .ReverseMap();
     }
 }

@@ -2,10 +2,13 @@
 @inherits LayoutComponentBase
 
 <Layout Class="layout">
-    <Header>
+    <Header class="headers">
         <div class="logo" />
-        <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Horizontal">
+        <Menu Class="main-headers" Theme="MenuTheme.Dark" Mode="MenuMode.Horizontal">
             <MenuItem RouterLink="/" Key="1">Замки</MenuItem>
+        </Menu>
+        <Menu Class="external-headers" Theme="MenuTheme.Dark" Mode="MenuMode.Horizontal">
+            <MenuItem RouterLink="/change-castles" Key="1">Админка</MenuItem>
         </Menu>
     </Header>
     <Content Class="site-layout-content" Style="padding: 0 50px;">
@@ -32,5 +35,14 @@
         background: rgba(255, 255, 255, 0.2);
         margin: 16px 24px 16px 0;
         float: left;
+    }
+
+    .headers {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .external-headers{
+        margin-left: auto;
     }
 </style>

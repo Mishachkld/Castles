@@ -4,11 +4,12 @@
 @using global::Castles.Entities
 @rendermode InteractiveWebAssembly
 @inject HttpClient _httpClient
+@inject NavigationManager NavManager
 
 
 <AntList DataSource="@_data" ItemLayout="@ListItemLayout.Vertical" Split>
     <ChildContent Context="item">
-        <ListItem>
+        <ListItem OnClick="() => OnItemClicked(item?.Id)">
             <ListItemMeta Description="@item.Description">
                 <AvatarTemplate>
                     @avatar
@@ -41,6 +42,15 @@
                 PropertyNameCaseInsensitive = true
             });
         }
+    }
+
+    private void OnItemClicked(Guid? castleId)
+    {
+        if (castleId == null)
+        {
+           return;
+        }
+        NavManager.NavigateTo($"castle/{castleId}");
     }
 
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Castles.Application.DTO.WebDto;
 using Castles.Application.Interfaces;
+using Castles.Application.Service;
 using Castles.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +12,12 @@ namespace Castles.WebAPI.Controllers;
 public class CastleController : ControllerBase
 {
     private readonly IRepositoryCRUD<Castle> _repository;
+    private readonly CastleService _service;
 
-    public CastleController(IRepositoryCRUD<Castle> repository)
+    public CastleController(IRepositoryCRUD<Castle> repository, CastleService service)
     {
         _repository = repository;
+        _service = service;
     }
 
     [HttpGet("castles")] // Явный абсолютный путь
@@ -40,12 +44,12 @@ public class CastleController : ControllerBase
     }
 
     [HttpPost("castle")]
-    public async Task<IActionResult> CastleCreate([FromBody] Castle castleNew)
+    public async Task<IActionResult> CastleCreate([FromBody] CreateCastleDto castleNew)
     {
-        Guid response;
+        CastleDetails response;
         try
         {
-            response = await _repository.Add(castleNew);
+            response = await _service.CreateCastleAsync(castleNew);
         }
         catch (Exception e)
         {
