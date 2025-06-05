@@ -1,0 +1,91 @@
+﻿@page "/change-castles"
+@using System.Text.Json
+@using Castles.Entities
+
+@inject HttpClient _httpClient
+@inject NavigationManager NavManager
+@inject IMessageService Message
+@inject ModalService Modal
+
+<AntList DataSource="@_data" Grid="new ListGridType(){Column = 4, Gutter = 16}" Split>
+    <ChildContent Context="item">
+        <ListItem OnClick="() => OnItemClicked(item?.Id)">
+            <ListItemMeta Description="@item.Description">
+                <AvatarTemplate>
+                    @avatar
+                </AvatarTemplate>
+                <TitleTemplate>
+                    <a href="/castle/@item.Id">@item.Name</a>
+                </TitleTemplate>
+            </ListItemMeta>
+            <Button OnClick="async () => DeleteItemAsync(item)" Icon="@IconType.Outline.Delete" Type="ButtonType.Text" OnClickStopPropagation></Button>
+            <Button OnClick="async () => UpdateItemAsync(item.Id)" Icon="@IconType.Outline.Download" Type="ButtonType.Text" OnClickStopPropagation></Button>
+        </ListItem>
+    </ChildContent>
+</AntList>
+
+
+@code {
+      private List<Castle> _data = [];
+
+      RenderFragment avatar = @<Image Width="200px" 
+                                      Height="auto"
+                                      Preview="false"
+                                      Src="https://www.onthegotours.com/repository/Conwy-Castle-Wales-830041705508083.jpg"/>;
+
+
+      protected override async Task OnParametersSetAsync()
+      {
+          var responseMessage = await _httpClient.GetAsync("api/castles");
+          if (responseMessage.IsSuccessStatusCode)
+          {
+              var content = await responseMessage.Content.ReadAsStringAsync();
+              _data = JsonSerializer.Deserialize<List<Castle>>(content, new JsonSerializerOptions()
+              {
+                  PropertyNameCaseInsensitive = true
+              });
+          }
+      }
+
+      private void OnItemClicked(Guid? castleId)
+      {
+          if (castleId == null)
+          {
+              return;
+          }
+          NavManager.NavigateTo($"castle/{castleId}");
+      }
+
+      private void DeleteItemAsync(Castle item)
+      {
+          Modal.CreateModal(new ModalOptions()
+          {
+              OnOk = async (options) => await DeleteRequest(item),
+          });
+      }
+
+      private async Task DeleteRequest(Castle item)
+      {
+          var isUpdated = false;
+          var responseMessage = await _httpClient.DeleteAsync($"api/castle/{item.Id}");
+          if (!responseMessage.IsSuccessStatusCode)
+          {
+              var content = await responseMessage.Content.ReadAsStringAsync();
+              isUpdated = JsonSerializer.Deserialize<bool>(content);
+          }
+         
+          if (isUpdated)
+          {
+              Message.Success("Удален объект");
+              _data.Remove(item);
+              return;
+          }
+          Message.Error("Не удалось обновить объект");
+      }
+
+      private void UpdateItemAsync(Guid id)
+      {
+          NavManager.NavigateTo("castle-update");
+      }
+
+}

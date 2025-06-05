@@ -1,26 +1,19 @@
 ﻿@page "/castles"
 @page "/"
-@using System.Text.Json
-@using global::Castles.Entities
 @rendermode InteractiveWebAssembly
+
+@using global::Castles.Entities
+@using System.Text.Json
+@using Castles.Front.Client.Components
+
 @inject HttpClient _httpClient
 @inject NavigationManager NavManager
 
-
-<AntList DataSource="@_data" ItemLayout="@ListItemLayout.Vertical" Split>
-    <ChildContent Context="item">
-        <ListItem OnClick="() => OnItemClicked(item?.Id)">
-            <ListItemMeta Description="@item.Description">
-                <AvatarTemplate>
-                    @avatar
-                </AvatarTemplate>
-                <TitleTemplate>
-                    <a href="/castle/@item.Id">@item.Name</a>
-                </TitleTemplate>
-            </ListItemMeta>
-        </ListItem>
-    </ChildContent>
-</AntList>
+<CastleList Castles="_data" OnSelect="OnItemClicked">
+    <Avatar>
+        @avatar
+    </Avatar>
+</CastleList>
 
 @code {
     private List<Castle> _data = [];

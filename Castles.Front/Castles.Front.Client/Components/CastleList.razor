@@ -1,0 +1,23 @@
+﻿@using global::Castles.Entities
+
+<AntList DataSource="@Castles" ItemLayout="@ListItemLayout.Vertical" Split>
+    <ChildContent Context="item">
+        <ListItem OnClick="() => OnSelect.InvokeAsync(item?.Id)">
+            <ListItemMeta Description="@item.Description">
+                <AvatarTemplate>
+                    @Avatar
+                </AvatarTemplate>
+                <TitleTemplate>
+                    <a href="/castle/@item.Id">@item.Name</a>
+                </TitleTemplate>
+            </ListItemMeta>
+        </ListItem>
+    </ChildContent>
+</AntList>
+
+@code {
+    [Parameter] public List<Castle> Castles { get; set; }
+    [Parameter] public RenderFragment Avatar { get; set; }
+    [Parameter] public EventCallback<Guid?> OnSelect { get; set; }
+    
+}
