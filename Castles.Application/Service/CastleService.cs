@@ -28,27 +28,19 @@ public class CastleService
 
         if (castle == null)
         {
-            return null;
+            throw new KeyNotFoundException($"The castle was not found. Id: '{castleId}'");
         }
 
-        return new CastleDetails()
-        {
-            Id = castle.Id,
-            Name = castle.Name,
-            Description = castle.Description,
-            BuildDate = castle.BuildDate,
-            Owner = new Owner
-            {
-                Id = castle.Owner.Id,
-                Name = castle.Owner.Name
-            },
-            ViewingStatus = new ViewingStatus
-            {
-                Id = castle.ViewingStatus.Id,
-                Name = castle.ViewingStatus.Name
-            },
-            PicturePath = castle.Pictures.Select(p =>  p.Path).ToList()
-        };
+        return _mapper.Map<CastleDetails>(castle);
+    } 
+    public async Task<List<CastleDetails>> GetCastles()
+    {
+        var castles = _context.Castles
+            .Include(c => c.Owner)
+            .Include(c => c.ViewingStatus)
+            .Include(c => c.Pictures);
+
+        return _mapper.Map<List<CastleDetails>>(castles);
     }
 
     public async Task<CastleDetails> CreateCastleAsync(CreateCastleDto createDto)

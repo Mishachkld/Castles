@@ -23,7 +23,7 @@ public class CastleController : ControllerBase
     [HttpGet("castles")] // Явный абсолютный путь
     public async Task<IActionResult> Castles()
     {
-        var castles = await _repository.GetAll();
+        var castles = await _service.GetCastles();
         return Ok(castles);
     }
 
@@ -33,7 +33,7 @@ public class CastleController : ControllerBase
         Castle castle;
         try
         {
-            castle = await _repository.Get(id);
+            castle = await _service.GetCastleWithDetailsAsync(id);
         }
         catch (Exception e)
         {
