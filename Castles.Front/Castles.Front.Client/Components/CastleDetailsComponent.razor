@@ -11,10 +11,13 @@
         </p>
         <PageHeader Title="Дополнительная информация"/>
         <p>
-            <Text Strong>Владелец:</Text>  @CastleInfo?.Owner?.Name
+            <Text Strong>Дата постройки:</Text> @(CastleInfo?.BuildDate == null ? "Не известно" : string.Format("", CastleInfo.BuildDate))
         </p>
         <p>
-            <Text Strong>Статус:</Text>  @CastleInfo?.ViewingStatus?.Name
+            <Text Strong>Владелец:</Text> @CastleInfo?.Owner?.Name
+        </p>
+        <p>
+            <Text Strong>Статус:</Text> @CastleInfo?.ViewingStatus?.Name
         </p>
     </div>
 </div>
