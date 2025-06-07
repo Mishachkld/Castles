@@ -1,16 +1,19 @@
 ﻿@page "/castle/{CastleId:guid}"
+@rendermode InteractiveWebAssembly
+
 @using System.Text.Json
 @using global::Castles.Entities
-@rendermode InteractiveWebAssembly
+@using Castles.Front.Client.Components
+
 @inject HttpClient _httpClient
 
 
-@_currentCastle?.Name
+<CastleDetailsComponent CastleInfo="_currentCastle"/>
 
 
 @code {
     [Parameter] public Guid CastleId { get; set; }
-    private Castle _currentCastle; 
+    private CastleDetails _currentCastle; 
 
     protected override async Task OnParametersSetAsync()
     {
@@ -18,7 +21,7 @@
         if (response.IsSuccessStatusCode)
         {
             var contentString = await response.Content.ReadAsStringAsync();
-            _currentCastle = JsonSerializer.Deserialize<Castle>(contentString, new JsonSerializerOptions()
+            _currentCastle = JsonSerializer.Deserialize<CastleDetails>(contentString, new JsonSerializerOptions()
             {
                 PropertyNameCaseInsensitive = true
             });

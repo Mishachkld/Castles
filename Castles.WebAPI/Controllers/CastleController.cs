@@ -30,7 +30,7 @@ public class CastleController : ControllerBase
     [HttpGet("castle/{id:guid}")]
     public async Task<IActionResult> Castle(Guid id)
     {
-        Castle castle;
+        CastleDetails castle;
         try
         {
             castle = await _service.GetCastleWithDetailsAsync(id);

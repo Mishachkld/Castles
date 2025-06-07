@@ -1,0 +1,52 @@
+﻿@using Castles.Entities
+
+<div class="castle-details-component">
+    @avatar
+    <div class="castle-details-content">
+        <Divider Orientation="DividerOrientation.Left" Style="font-weight:bold">
+            <PageHeader Title="@CastleInfo?.Name"/>
+        </Divider>
+        <p>
+            @CastleInfo?.Description
+        </p>
+        <PageHeader Title="Дополнительная информация"/>
+        <p>
+            <Text Strong>Владелец:</Text>  @CastleInfo?.Owner?.Name
+        </p>
+        <p>
+            <Text Strong>Статус:</Text>  @CastleInfo?.ViewingStatus?.Name
+        </p>
+    </div>
+</div>
+
+
+
+
+
+@code {
+    [Parameter] public CastleDetails CastleInfo { get; set; }
+
+    RenderFragment avatar = @<Image Width="400px"
+                                    Height="auto"
+                                    Preview="false"
+                                    Style="margin: 4px; margin-top: 20px"
+                                    Src="https://www.onthegotours.com/repository/Conwy-Castle-Wales-830041705508083.jpg"/>;
+
+}
+
+
+<style>
+    .castle-details-component {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .castle-details-content {
+        height: 100%;
+        width: 100%;
+        padding: 4px;
+        margin: 16px;
+    }
+</style>

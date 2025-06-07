@@ -12,7 +12,7 @@
 <AntList DataSource="@_data" Grid="new ListGridType() { Column = 4, Gutter = 16 }" Split>
     <ChildContent Context="item">
         <ListItem OnClick="() => OnItemClicked(item?.Id)">
-            <ListItemMeta Description="@item.Description">
+            <ListItemMeta Description="@(item.Description.Length > 100 ? item.Description[..100] : item.Description)">
                 <AvatarTemplate>
                     @avatar
                 </AvatarTemplate>
