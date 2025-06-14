@@ -1,0 +1,22 @@
+@*<Form Model="" 
+      LabelColSpan="8" WrapperColSpan="16"
+      OnFinish="HandleOk">
+    <FormItem Label="Название" Required>
+        <Input @bind-Value="@Name" />
+    </FormItem>
+
+    <FormItem Label="Описание">
+        <TextArea Rows="4" @bind-Value="@Description" />
+    </FormItem>
+
+    <FormItem Label="Дата постройки">
+        <DatePicker @bind-Value="BuildDate" Format="yyyy-MM-dd" />
+    </FormItem>
+    <Button HtmlType="submit">Создать замок</Button>
+</Form>
+@code {
+    [Parameter] public string Description { get; set; }
+    [Parameter] public string Name { get; set; }
+    [Parameter] public DateTime BuildDate { get; set; }
+    
+}*@

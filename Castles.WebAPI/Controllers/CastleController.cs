@@ -13,14 +13,16 @@ public class CastleController : ControllerBase
 {
     private readonly IRepositoryCRUD<Castle> _repository;
     private readonly CastleService _service;
+    private readonly ILogger<CastleController> _logger;
 
-    public CastleController(IRepositoryCRUD<Castle> repository, CastleService service)
+    public CastleController(IRepositoryCRUD<Castle> repository, CastleService service, ILogger<CastleController> logger)
     {
         _repository = repository;
         _service = service;
+        _logger = logger;
     }
 
-    [HttpGet("castles")] // Явный абсолютный путь
+    [HttpGet("castles")]
     public async Task<IActionResult> Castles()
     {
         var castles = await _service.GetCastles();
@@ -50,7 +52,8 @@ public class CastleController : ControllerBase
         try
         {
             response = await _service.CreateCastleAsync(castleNew);
-        }
+            _logger.LogInformation($"Created castle with id: '{response.Id}'");
+        }    
         catch (Exception e)
         {
             return BadRequest(e.Message);

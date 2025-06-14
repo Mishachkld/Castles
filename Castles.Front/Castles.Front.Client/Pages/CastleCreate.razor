@@ -18,6 +18,15 @@
     <FormItem Label="Дата постройки">
         <DatePicker @bind-Value="@_buildDate" Format="yyyy-MM-dd" />
     </FormItem>
+    <FormItem Label="Владелец" Required>
+        <Select TItem="OwnerDto" TItemValue="int?" DataSource="[]" bind-Value="_createCastleDto.OwnerId" DefaultActiveFirstOption>
+            
+        </Select>
+    </FormItem>
+    <FormItem Label="Доступность осмотра" Required>
+        <Select TItem="ViewingStatusDto" TItemValue="int?" DataSource="[]" bind-Value="_createCastleDto.ViewingStatusId" DefaultActiveFirstOption>
+        </Select>
+    </FormItem>
     <Button HtmlType="submit" OnClick="HandleOk">Создать замок</Button>
 </Form>
 
