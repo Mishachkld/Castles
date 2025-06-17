@@ -4,7 +4,7 @@
 @using System.Text.Json
 @using Castles.Entities
 
-@inject HttpClient _httpClient
+@inject HttpClient HttpClient
 @inject NavigationManager NavManager
 @inject MessageService Message
 @inject ModalService Modal
@@ -21,7 +21,7 @@
                 </TitleTemplate>
             </ListItemMeta>
             <Button OnClick="async () => await DeleteItemAsync(item)" Icon="@IconType.Outline.Delete" Type="ButtonType.Text" OnClickStopPropagation></Button>
-            <Button OnClick="async () => UpdateItemAsync(item.Id)" Icon="@IconType.Outline.Download" Type="ButtonType.Text" OnClickStopPropagation></Button>
+            <Button OnClick="async () => UpdateItemAsync(item.Id)" Icon="@IconType.Outline.Edit" Type="ButtonType.Text" OnClickStopPropagation></Button>
         </ListItem>
     </ChildContent>
 </AntList>
@@ -37,7 +37,7 @@
 
       protected override async Task OnParametersSetAsync()
       {
-          var responseMessage = await _httpClient.GetAsync("api/castles");
+          var responseMessage = await HttpClient.GetAsync("api/castles");
           if (responseMessage.IsSuccessStatusCode)
           {
               var content = await responseMessage.Content.ReadAsStringAsync();
@@ -69,7 +69,7 @@
       private async Task DeleteRequest(Castle item)
       {
           var isUpdated = false;
-          var responseMessage = await _httpClient.DeleteAsync($"api/castle/{item.Id}");
+          var responseMessage = await HttpClient.DeleteAsync($"api/castle/{item.Id}");
           if (responseMessage.IsSuccessStatusCode)
           {
               var content = await responseMessage.Content.ReadAsStringAsync();
